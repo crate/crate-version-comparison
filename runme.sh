@@ -1,3 +1,6 @@
 #!/bin/bash
 
-sudo docker info
+/sbin/ifconfig
+
+docker info
+
