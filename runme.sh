@@ -60,6 +60,15 @@ else
 fi
 
 
+echo "Python environment:"
+if $PYTHON --version; then
+    echo "Python ok."
+else
+    echo "missing. Exiting."
+    exit 3
+fi
+
+
 # Project environment cache, each version gets own directory
 [ -d $BASEDIR ] || mkdir -p $BASEDIR
 cd $BASEDIR
@@ -87,7 +96,7 @@ for i in $(seq 1 $N); do
           -Des.cluster.name=bench-insert-cluster \
 	  -Des.network.bind_host=$IP \
           -Des.network.publish_host=$IP \
-	  -Des.http.port=$http
+	  -Des.http.port=$http \
           -Des.transport.tcp.port=$tran \
           -Des.transport.publish_port=$tran \
           -Des.node.name=bench-node-$i \
@@ -109,9 +118,23 @@ else
 fi
 
 
+# Spinlock to make sure the cluster has started by now
+
+echo -n "Waiting for cluster to become ready: "
+until curl -Ssl 127.0.0.2:4251 2>/dev/null | grep -q ok; do
+    echo -n "."
+    sleep 1
+done
+echo " Ready."
+
+
 # Feed benchmark data into cluster
 echo "Starting benchmark ..."
-$PYTHON bench.py --runs $RUNS \ 
+echo $PYTHON $TOOLSDIR/bench.py --runs $RUNS \
+                 $BASEDIR/bench-data.json \
+                 $REQUESTS \
+		 $IP:$HTTPPORT
+$PYTHON $TOOLSDIR/bench.py --runs $RUNS \
                  $BASEDIR/bench-data.json \
                  $REQUESTS \
 		 $IP:$HTTPPORT
