@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS bench.t1 (t STRING) CLUSTERED INTO 2 SHARDS WITH (number_of_replicas = '1')
