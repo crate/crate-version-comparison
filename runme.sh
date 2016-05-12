@@ -5,8 +5,8 @@
 ## Source packages
 CDN=https://cdn.crate.io/downloads/releases
 
-## Runtime environment
-BASEDIR=$HOME/versions
+## Cache for the runtime environment
+BASEDIR=${WORKSPACE:-$HOME}/cache
 
 ## Number of nodes in cluster
 N=2
