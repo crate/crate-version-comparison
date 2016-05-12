@@ -28,7 +28,7 @@ TRANPORT=4351
 CRATE_HEAP_SIZE=1g
 
 ## Tools directory from package crate-version-comparison
-TOOLSDIR=${$WORKSPACE:-$(pwd)}/tools
+TOOLSDIR=${WORKSPACE:-$(pwd)}/tools
 
 ## Python interpreter
 PYTHON=python2.7
