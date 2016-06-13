@@ -106,7 +106,7 @@ if __name__ == '__main__':
                 "version": version,
                 "duration": response["duration"],
                 "run_id": run_id,
-                "rows": reduce(lambda p, x: p + x["rowcount"], response["results"], 0)
+                "rows": reduce(lambda p, x: p + x["rowcount"], response["results"], 0) if "results" in response else response["rowcount"]
             })
         except KeyError as e:
             print("Key Error: %s" % (e, ), response, file=sys.stderr)
